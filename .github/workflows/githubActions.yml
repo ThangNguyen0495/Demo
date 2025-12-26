@@ -34,4 +34,4 @@ jobs:
 
       - name: Run TestNG tests
         run: |
-          mvn test -DsuiteFile=src/main/resources/suites/testng.xml
+          mvn test -DsuiteXmlFile=src/main/resources/suites/testng.xml
