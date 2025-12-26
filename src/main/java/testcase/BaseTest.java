@@ -9,6 +9,7 @@ import utils.driver.Driver;
 
 public class BaseTest {
     public static TestConfig config;
+    public static String browser;
 
     private static final ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
 
@@ -21,6 +22,7 @@ public class BaseTest {
     @Parameters("browser")
     @BeforeMethod(alwaysRun = true)
     public void initDriver(@Optional("chrome") String browser) {
+        BaseTest.browser = browser;
         Driver.initDriver(browser);
         driverThread.set(Driver.getWebDriver());
     }
