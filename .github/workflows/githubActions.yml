@@ -1,49 +1,37 @@
 name: Selenium workflow
 
+on:
+  push:
+  pull_request:
+
 jobs:
-  Selenium-Job:
-    runs-on: ubuntu-latest
+  selenium-tests:
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '22'
-          distribution: 'adopt'
-
-      - name: Install FFmpeg
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+          distribution: 'temurin'
 
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-ubuntu
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven-ubuntu
+            ${{ runner.os }}-maven-
 
       - name: Install dependencies
-        run: |
-          mvn install -DskipTests
+        run: mvn install -DskipTests
 
-      - name: Run tests
+      - name: Run TestNG tests
         run: |
-          mvn --batch-mode test "-DsuiteFile=${{ inputs.test_config }}"
-
-      - name: Upload Test Report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test Reports - ${{ inputs.test_name }}
-          path: |
-            CheckoutFolder/target/BufferLog.
-            CheckoutFolder/target/ExtentReport.html
-            CheckoutFolder/recording_video
-
-      - name: Remove cloned repo
-        if: ${{ inputs.artifact != '' }}
-        run: |
-          rm -r CheckoutFolder
+          mvn test -DsuiteFile=src/main/resources/suites/testng.xml
