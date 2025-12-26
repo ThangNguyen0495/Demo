@@ -15,11 +15,11 @@
         </classes>
     </test>
 
-<!--    <test name="Firefox Checkout Tests">-->
-<!--        <parameter name="browser" value="firefox"/>-->
-<!--        <classes>-->
-<!--            <class name="testcase.LoginTests"/>-->
-<!--            <class name="testcase.CheckoutTests"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="Firefox Checkout Tests">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="testcase.LoginTests"/>
+            <class name="testcase.CheckoutTests"/>
+        </classes>
+    </test>
 </suite>
